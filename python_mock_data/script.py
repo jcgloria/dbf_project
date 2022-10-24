@@ -14,6 +14,7 @@ cursor = cnx.cursor()
 
 #Create users
 users = []
+sellers = [] #only sellers can make auctions. Keep this list separate. 
 file = open('users.csv', 'r')
 for line in file:
     values = line.split(',')
@@ -21,6 +22,8 @@ for line in file:
                "(username, seller, pass, email) "
                "VALUES (%s, %s, %s, %s)")
     data_user = (values[0], True if values[1] == 'true' else False, values[2], values[3])
+    if values[1] == 'true':
+        sellers.append(values[0])
     cursor.execute(add_user, data_user)
     users.append(values[0])
 
@@ -41,7 +44,7 @@ for line in file:
     add_auctions = ("INSERT INTO Auctions "
                "(username, title, details, category, startingPrice, reservePrice, endDate) " 
                "VALUES (%s, %s, %s, %s, %s, %s, %s)")
-    user = choice(users)
+    user = choice(sellers)
     category = choice(categories)
     data_auctions = (user, values[0], values[1], category, values[2], 0 if not values[3] else values[3], datetime.strptime(values[4].replace('\n', ''),"%Y-%m-%dT%H:%M:%SZ"))
     cursor.execute(add_auctions, data_auctions)
