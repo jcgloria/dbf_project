@@ -109,7 +109,8 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
           <div class="input-group-prepend">
             <span class="input-group-text">£</span>
           </div>
-          <input type="number" class="form-control" id="bid">
+          <input type="number" class="form-control" name = "bid" id="bid">
+          <input type="hidden" name="auctionID" value="<?php echo $item_id; ?>">
         </div>
         <button type="submit" class="btn btn-primary form-control">Place bid</button>
       </form>

@@ -112,7 +112,7 @@
   $description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum eget rutrum ipsum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Phasellus feugiat, ipsum vel egestas elementum, sem mi vestibulum eros, et facilisis dui nisi eget metus. In non elit felis. Ut lacus sem, pulvinar ultricies pretium sed, viverra ac sapien. Vivamus condimentum aliquam rutrum. Phasellus iaculis faucibus pellentesque. Sed sem urna, maximus vitae cursus id, malesuada nec lectus. Vestibulum scelerisque vulputate elit ut laoreet. Praesent vitae orci sed metus varius posuere sagittis non mi.";
   $current_price = 30;
   $num_bids = 1;
-  $end_date = new DateTime('2020-09-16T11:00:00');
+  $end_date = new DateTime('2023-09-16T11:00:00');
   
   // This uses a function defined in utilities.php
   print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
@@ -122,7 +122,7 @@
   $description = "Very short description.";
   $current_price = 13.50;
   $num_bids = 3;
-  $end_date = new DateTime('2020-11-02T00:00:00');
+  $end_date = new DateTime('2023-11-02T00:00:00');
   
   print_listing_li($item_id, $title, $description, $current_price, $num_bids, $end_date);
 ?>
