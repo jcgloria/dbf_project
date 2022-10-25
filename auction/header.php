@@ -4,21 +4,21 @@
   // ONLY after the user's login credentials have been verified via a 
   // database query.
   
-    define('DB_HOST', 'localhost');
-    //please change to your onw user accounts in phpmyadmin
-    define('DB_USER','Jay');
-    define('DB_PASS','123456');
-    define('DB_NAME', 'dbf_project');
-    //connect to mysql database
-    $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME) or die ('connection error!');
-    //check connection(can delete)
-    if($conn->connect_error) {
-        die('connection failed' . $conn->connect_error);
-    } else {
-      echo 'connected';
-    }
-  
-    session_start();
+  define('DB_HOST', 'localhost');
+  define('DB_USER','root');
+  define('DB_PASS','rot');
+  define('DB_NAME', 'dbf_project');
+  //connect to mysql database
+  $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME); //or die ('connection error!');
+  //check connection(can delete)
+  if($conn->connect_error) {
+    echo "connection error: " .$conn->connect_error;
+    die();
+  } else {
+    echo '<script>console.log("connected")</script>';
+  }
+
+  session_start(); 
 ?>
 
 
