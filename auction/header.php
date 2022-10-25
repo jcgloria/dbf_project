@@ -6,7 +6,7 @@
   
   define('DB_HOST', 'localhost');
   define('DB_USER','root');
-  define('DB_PASS','rot');
+  define('DB_PASS','root');
   define('DB_NAME', 'dbf_project');
   //connect to mysql database
   $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME); //or die ('connection error!');
@@ -35,15 +35,14 @@
   <!-- Custom CSS file -->
   <link rel="stylesheet" href="css/custom.css">
 
-  <title>[My Auction Site] <!--CHANGEME!--></title>
+  <title>DBay</title>
 </head>
-
 
 <body>
 
 <!-- Navbars -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light mx-2">
-  <a class="navbar-brand" href="#">Site Name <!--CHANGEME!--></a>
+  <a class="navbar-brand" href="#">DBay</a>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item">
     
@@ -103,12 +102,12 @@
       <div class="modal-body">
         <form method="POST" action="login_result.php">
           <div class="form-group">
-            <label for="email">Email</label>
-            <input type="text" class="form-control" id="email" placeholder="Email">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" name="username" id="username" placeholder="Username">
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Password">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password">
           </div>
           <button type="submit" class="btn btn-primary form-control">Sign in</button>
         </form>
