@@ -10,7 +10,7 @@
   define('DB_NAME', 'dbf_project');
   //connect to mysql database
   $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME); //or die ('connection error!');
-  //check connection(can delete)
+  //check connection
   if($conn->connect_error) {
     echo "connection error: " .$conn->connect_error;
     die();
