@@ -6,13 +6,21 @@
   $item_id = $_GET['item_id'];
 
   // TODO: Use item_id to make a query to the database.
+  $sqll = "select*from Auctions where auctionId = '$item_id'";
+  $res = mysqli_query($conn, $sqll);
+  $sql_fetch = mysqli_fetch_row($res);
+  if($sql_fetch) {
+    $title = $sql_fetch[2];
+    $description = $sql_fetch[3];
+    $current_price = $sql_fetch[4];
+    $num_bids = 1;
+    $end_time = new DateTime('2020-11-02T00:00:00');
+  }
+
 
   // DELETEME: For now, using placeholder data.
   $title = "Placeholder title";
-  $description = "Description blah blah blah";
-  $current_price = 30.50;
-  $num_bids = 1;
-  $end_time = new DateTime('2020-11-02T00:00:00');
+
 
   // TODO: Note: Auctions that have ended may pull a different set of data,
   //       like whether the auction ended in a sale or was cancelled due

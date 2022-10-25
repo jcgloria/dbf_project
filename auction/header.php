@@ -3,7 +3,6 @@
   // But eventually, with a database, these should be set automatically
   // ONLY after the user's login credentials have been verified via a 
   // database query.
-  
   define('DB_HOST', 'localhost');
   define('DB_USER','root');
   define('DB_PASS','root');
@@ -41,6 +40,12 @@
 <body>
 
 <!-- Navbars -->
+<?php
+  if(!empty($_SESSION['msg'])){
+    echo $_SESSION['msg'];
+    $_SESSION['msg'] = "";
+  }
+  ?>
 <nav class="navbar navbar-expand-lg navbar-light bg-light mx-2">
   <a class="navbar-brand" href="#">DBay</a>
   <ul class="navbar-nav ml-auto">
