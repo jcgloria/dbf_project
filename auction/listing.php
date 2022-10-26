@@ -19,6 +19,9 @@ if ($sql_fetch_auction && $sql_fetch_bids && $sql_fetch_price) {
   $current_price = $sql_fetch_price[0];
   $num_bids = $sql_fetch_bids[0];
   $end_time = new DateTime($sql_fetch_auction[2]);
+  $reserve_price = $sql_fetch_auction[3];
+  //Check to see if the current bid is higher than the reserve price
+  $current_price >= $reserve_price ? $minBid = true : $minBid = false;
 } else {
   $_SESSION['msg'] = '<div class="alert alert-danger" role="alert">
         There was an error picking up the data from the server
@@ -52,7 +55,6 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
 }
 
 ?>
-
 
 <div class="container">
 
@@ -97,8 +99,13 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
         <?php if ($now > $end_time) : ?>
           This auction ended <?php echo (date_format($end_time, 'j M H:i')) ?>
           <!-- TODO: Print the result of the auction here? -->
-         <?php 
-         if($minBid){echo 'Minimum bid not met';} else { echo 'Sold!';} ?>
+          <?php
+          echo '<br>';
+          if ($minBid) {
+            echo 'Sold!';
+          } else {
+            echo 'Minimum bid not met.';
+          } ?>
         <?php else : ?>
           Auction ends <?php echo (date_format($end_time, 'j M H:i') . $time_remaining) ?>
       </p>
