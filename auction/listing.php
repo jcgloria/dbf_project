@@ -8,17 +8,17 @@ $item_id = $_GET['item_id'];
 // TODO: Use item_id to make a query to the database.
 
 //Getting the specific auction
-$sql_fetch_auction = mysqli_fetch_row(mysqli_query($conn, "select auctionId, title, details, endDate from Auctions where auctionId = '$item_id'"));
+$sql_fetch_auction = mysqli_fetch_row(mysqli_query($conn, "select title, details, endDate, reservePrice from Auctions where auctionId = '$item_id'"));
 //Getting the number of bids
 $sql_fetch_bids = mysqli_fetch_row(mysqli_query($conn, "select count(*) from Bids where auctionId = '$item_id'"));
 //Getting the current price
 $sql_fetch_price = mysqli_fetch_row(mysqli_query($conn, "select max(bidPrice) from Bids where auctionId = '$item_id'"));
 if ($sql_fetch_auction && $sql_fetch_bids && $sql_fetch_price) {
-  $title = $sql_fetch_auction[1];
-  $description = $sql_fetch_auction[2];
+  $title = $sql_fetch_auction[0];
+  $description = $sql_fetch_auction[1];
   $current_price = $sql_fetch_price[0];
   $num_bids = $sql_fetch_bids[0];
-  $end_time = new DateTime($sql_fetch_auction[3]);
+  $end_time = new DateTime($sql_fetch_auction[2]);
 } else {
   $_SESSION['msg'] = '<div class="alert alert-danger" role="alert">
         There was an error picking up the data from the server
@@ -93,11 +93,12 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
 
     <div class="col-sm-4">
       <!-- Right col with bidding info -->
-
       <p>
         <?php if ($now > $end_time) : ?>
           This auction ended <?php echo (date_format($end_time, 'j M H:i')) ?>
           <!-- TODO: Print the result of the auction here? -->
+         <?php 
+         if($minBid){echo 'Minimum bid not met';} else { echo 'Sold!';} ?>
         <?php else : ?>
           Auction ends <?php echo (date_format($end_time, 'j M H:i') . $time_remaining) ?>
       </p>
@@ -109,7 +110,7 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
           <div class="input-group-prepend">
             <span class="input-group-text">£</span>
           </div>
-          <input type="number" class="form-control" name = "bid" id="bid">
+          <input type="number" class="form-control" name="bid" id="bid">
           <input type="hidden" name="auctionID" value="<?php echo $item_id; ?>">
         </div>
         <button type="submit" class="btn btn-primary form-control">Place bid</button>

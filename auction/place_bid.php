@@ -4,7 +4,7 @@
 $bidAmt = $_POST['bid'];
 $auctionID = $_POST['auctionID'];
 
-if (!isset($_SESSION['logged_in'])) {
+if (!isset($_SESSION) || !$_SESSION['logged_in']) {
     $_SESSION['msg'] = '<div class="alert alert-danger" role="alert">
             You must login to place a bid
             </div>';
