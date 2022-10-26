@@ -1,26 +1,20 @@
 <?php include_once("header.php") ?>
 <?php
 
-// TODO: Extract $_POST variables, check they're OK, and attempt to make a bid.
-// Notify user of success/failure and redirect/give navigation options.
-
 $bidAmt = $_POST['bid'];
 $auctionID = $_POST['auctionID'];
 
-foreach($_POST as $key=>$value)
-{
-  echo "$key=$value <br>";
+if (!isset($_SESSION['logged_in'])) {
+    $_SESSION['msg'] = '<div class="alert alert-danger" role="alert">
+            You must login to place a bid
+            </div>';
+    header('Location:listing.php?item_id='.$auctionID);
+    die();
 }
-echo " Querying...";
+
 $sqll = "select*from Bids where auctionId = '$auctionID' ORDER BY bidPrice DESC LIMIT 1";
 $res = mysqli_query($conn, $sqll);
 $sql_fetch = mysqli_fetch_row($res);
-echo " Done! <br>";
-
-foreach($sql_fetch as $key=>$value)
-{
-    echo "$key=$value <br>";
-}
 
 function placeBid($connection, $username, $aID, $bidVal) {
     $sqlUpdateRow = "INSERT INTO Bids (username, auctionId, bidPrice) VALUES ('".$username."', '".$aID."', '".$bidVal."')";
@@ -34,8 +28,6 @@ function placeBid($connection, $username, $aID, $bidVal) {
 }
 
 if($sql_fetch) {
-    echo " Fetch successful <br>";
-
     // Check if bid higher than highest bid
     if($bidAmt > $sql_fetch[3]) {    
         $_SESSION['msg'] = placeBid($conn, $_SESSION['username'], $auctionID, $bidAmt);
@@ -49,7 +41,6 @@ if($sql_fetch) {
             </div>';
     }
 } else { // No previous bids...
-    echo " Fetch unsuccessful <br>";
     $_SESSION['msg'] = placeBid($conn, $_SESSION['username'], $auctionID, $bidAmt);
 }
 
