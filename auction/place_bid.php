@@ -6,8 +6,8 @@ $auctionID = $_POST['auctionID'];
 
 if (!isset($_SESSION) || !$_SESSION['logged_in']) {
     $_SESSION['msg'] = '<div class="alert alert-danger" role="alert">
-            You must login to place a bid
-            </div>';
+        You must login to place a bid
+        </div>';
     header('Location:listing.php?item_id='.$auctionID);
     die();
 }
@@ -18,11 +18,18 @@ $sql_fetch = mysqli_fetch_row($res);
 
 function placeBid($connection, $username, $aID, $bidVal) {
     $sqlUpdateRow = "INSERT INTO Bids (username, auctionId, bidPrice) VALUES ('".$username."', '".$aID."', '".$bidVal."')";
-    if ($connection->query($sqlUpdateRow) === TRUE) { echo "New record created successfully"; }
-    else { echo "Error: " . $sqlUpdateRow . "<br>" . $connection->error; }
-    $msg = '<div class="alert alert-success" role="alert">
-        Your bid has been placed!
-        </div>';
+    if ($connection->query($sqlUpdateRow) === TRUE) { 
+        echo "New record created successfully";
+        $msg = '<div class="alert alert-success" role="alert">
+            Your bid has been placed!
+            </div>';
+    }
+    else { 
+        echo "Error: " . $sqlUpdateRow . "<br>" . $connection->error;
+        $_SESSION['msg'] = '<div class="alert alert-danger" role="alert">
+            There was a problem... bid not placed.
+            </div>';
+    }
     
     return $msg;
 }
