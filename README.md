@@ -1,12 +1,16 @@
 # dbf_project
+
 UCL 0178 Database Fundamentals Project
+
 Group 19:
-  Alexandros Doganis
-  Jay Xiao
-  Juan Carlos Gloria
-  Sahile Lukose
+  * Alexandros Doganis
+  * Jay Xiao
+  * Juan Carlos Gloria
+  * Sahile Lukose
+
 ---
 Stack: PHP, MySQL, Bootstrap
+
 ---
 Use:
   1. Start MAMPS/XAMPS/WAMPS
