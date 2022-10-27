@@ -138,7 +138,6 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
     // JavaScript functions: addToWatchlist and removeFromWatchlist.
 
     function addToWatchlist(button) {
-      console.log("These print statements are helpful for debugging btw");
 
       // This performs an asynchronous call to a PHP function using POST method.
       // Sends item ID as an argument to that function.
@@ -146,14 +145,12 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
         type: "POST",
         data: {
           functionname: 'add_to_watchlist',
-          arguments: [<?php echo ($item_id); ?>]
+          arguments: [<?php echo ($item_id); ?>, <?php echo "'$user'"; ?>],
         },
 
         success: function(obj, textstatus) {
           // Callback function for when call is successful and returns obj
-          console.log("Success");
           var objT = obj.trim();
-
           if (objT == "success") {
             $("#watch_nowatch").hide();
             $("#watch_watching").show();
@@ -165,7 +162,7 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
         },
 
         error: function(obj, textstatus) {
-          console.log("Error");
+          console.log(obj);
         }
       }); // End of AJAX call
 
@@ -178,12 +175,11 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
         type: "POST",
         data: {
           functionname: 'remove_from_watchlist',
-          arguments: [<?php echo ($item_id); ?>]
+          arguments: [<?php echo ($item_id); ?>, <?php echo "'$user'"; ?>]
         },
 
         success: function(obj, textstatus) {
           // Callback function for when call is successful and returns obj
-          console.log("Success");
           var objT = obj.trim();
 
           if (objT == "success") {
