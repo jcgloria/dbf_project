@@ -45,11 +45,11 @@ $result = mysqli_query($conn,$sql);
         <div class="form-group row">
           <label for="auctionCategory" class="col-sm-2 col-form-label text-right">Category</label>
           <div class="col-sm-10">
-            <select class="form-control" id="auctionCategory">
+            <select class="form-control" name="category" id="auctionCategory">
               <option selected>Choose...</option>
               <?php
               while($rows = mysqli_fetch_assoc($result)) {
-                echo "<option>".$rows['category'] ."</option>";
+                echo '<option value="' .$rows['category'].'">' .$rows['category'] ."</option>";
               } 
               ?>
             </select>
