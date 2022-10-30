@@ -87,7 +87,7 @@ $result = mysqli_query($conn,$sql);
             <small id="endDateHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Day for the auction to end.</small>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary form-control">Create Auction</button>
+        <button type="submit" class="btn btn-primary form-control" name="createAuction">Create Auction</button>
       </form>
     </div>
   </div>
