@@ -6,7 +6,7 @@ Group 19:
   * Alexandros Doganis
   * Jay Xiao
   * Juan Carlos Gloria
-  * Sahile Lukose
+  * Sahil Lukose
 
 ---
 Stack: PHP, MySQL, Bootstrap
