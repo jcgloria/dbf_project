@@ -27,7 +27,7 @@ $result = mysqli_query($conn,$sql);
       before they try to send it, but that kind of functionality should be
       extremely low-priority / only done after all database functions are
       complete. -->
-      <form method="post" action="create_auction_result.php">
+      <form method="post" action="create_auction_result.php" enctype="multipart/form-data">
         <div class="form-group row">
           <label for="auctionTitle" class="col-sm-2 col-form-label text-right">Title of auction</label>
           <div class="col-sm-10">
@@ -40,6 +40,13 @@ $result = mysqli_query($conn,$sql);
           <div class="col-sm-10">
             <textarea class="form-control" name="details" id="auctionDetails" rows="4"></textarea>
             <small id="detailsHelp" class="form-text text-muted">Full details of the listing to help bidders decide if it's what they're looking for.</small>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="auctionImage" class="col-sm-2 col-form-label text-right">Upload an image</label>
+          <div class="col-sm-10">
+            <input type="file" class="form-control" name="image" id="auctionImage" ></br>
+            <small id="imageHelp" class="form-text text-muted">Upload an image of the item you're selling. This will be displayed in listings.</small>
           </div>
         </div>
         <div class="form-group row">

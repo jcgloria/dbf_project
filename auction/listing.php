@@ -10,7 +10,7 @@ if(empty($item_id)){
 // TODO: Use item_id to make a query to the database.
 
 //Getting the specific auction
-$sql_fetch_auction = mysqli_fetch_row(mysqli_query($conn, "select title, details, endDate, reservePrice from Auctions where auctionId = '$item_id'"));
+$sql_fetch_auction = mysqli_fetch_row(mysqli_query($conn, "select title, details, endDate, reservePrice, auctionImage from Auctions where auctionId = '$item_id'"));
 //Getting the number of bids
 $sql_fetch_bids = mysqli_fetch_row(mysqli_query($conn, "select count(*) from Bids where auctionId = '$item_id'"));
 //Getting the current price
@@ -21,6 +21,7 @@ if ($sql_fetch_auction && $sql_fetch_bids && $sql_fetch_price) {
   $current_price = $sql_fetch_price[0];
   $num_bids = $sql_fetch_bids[0];
   $end_time = new DateTime($sql_fetch_auction[2]);
+  $image = $sql_fetch_auction[4];
   $reserve_price = $sql_fetch_auction[3];
   //Check to see if the current bid is higher than the reserve price
   $current_price >= $reserve_price ? $minBid = true : $minBid = false;
@@ -92,9 +93,17 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
       <div class="itemDescription">
         <?php echo ($description); ?>
       </div>
-
+      <br>
+      <div class = "itemImage">
+        <img src="<?php echo ($image); ?>" alt="Auction Image" class="img-thumbnail"  width="500" height="500">	
     </div>
-
+    <div class = "col-sm-4"></br>
+      <!-- show reserve price if it is set -->
+      <?php if ($reserve_price != 0) {
+          echo "<p class = text-muted   > Reserve price: $$reserve_price </p>";
+      }
+      ?>
+    </div>
     <div class="col-sm-4">
       <!-- Right col with bidding info -->
       <p>

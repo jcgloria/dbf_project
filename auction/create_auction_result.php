@@ -76,11 +76,57 @@ if(isset($_POST['createAuction'])) {
     //add seconds to Datetime 
     $w = $endDate .":00";
 
+    //check image
+    if(empty($_FILES['image']['name'])) {
+        $image = null;
+    } else {
+        $image = addslashes(file_get_contents($_FILES['image']['tmp_name']));
+    }
+    $target_dir = "images/";
+    $target_file = $target_dir . basename($_FILES["image"]["name"]);
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+    
+    // Check if image file is an actual image or fake image
+    if(isset($_POST["submit"])) {
+        $check = getimagesize($_FILES["image"]["tmp_name"]);
+        if($check !== false) {
+            $uploadOk = 1;
+        } else {
+            echo nl2br("File is not an image.\n");
+            $uploadOk = 0;
+        }
+    }
+    
+    // Check file size
+    if ($_FILES["image"]["size"] > 5000000) {
+        echo nl2br("Sorry, your file is too large.\n");
+        $uploadOk = 0;
+    }
+    
+    // Allow certain file formats
+    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
+        echo nl2br("Sorry, only JPG, JPEG, PNG & GIF files are allowed.\n");
+        $uploadOk = 0;
+    }
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+    // if everything is ok, try to upload file
+    } 
+    if ($uploadOk == 1) {
+        $newfilename = $target_dir . round(microtime(true)) . '.' . $imageFileType;
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $newfilename)) {
+        echo "The file ". htmlspecialchars( basename( $_FILES["image"]["name"])). " has been uploaded.";
+        } else {
+        echo "Sorry, there was an error uploading your file.";
+        }
+    }
 
     /* TODO #3: If everything looks good, make the appropriate call to insert
             data into the database. */
 
-    $sql = "INSERT INTO Auctions(username,title,details,category,startingPrice,reservePrice,endDate) VALUES ('$username', '$title', '$details', '$category', '$startingPrice', '$reservePrice', timestamp '$w' )";
+    $sql = "INSERT INTO Auctions(username,title,details,category,startingPrice,reservePrice,endDate,auctionImage) VALUES ('$username', '$title', '$details', '$category', '$startingPrice', '$reservePrice', timestamp '$w', '$newfilename')";
 
 
     if(mysqli_query($conn,$sql)) {

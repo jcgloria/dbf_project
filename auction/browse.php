@@ -75,6 +75,10 @@ if (isset($_GET['cat'])) {
   }
 }
 
+if (isset($_GET['has_img'])) {
+  $category = $_GET['has_img'];
+  $where_clause .= " AND a.image is not null";
+}
 if (isset($_GET['order_by'])) {
   $ordering = $_GET['order_by'];
   switch ($ordering) {
