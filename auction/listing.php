@@ -3,7 +3,9 @@
 
 <?php
 // Get info from the URL:
-$item_id = $_GET['item_id'];
+if(empty($item_id)){
+  $item_id = $_GET['item_id'];
+}
 
 // TODO: Use item_id to make a query to the database.
 
