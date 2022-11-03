@@ -34,6 +34,7 @@ CREATE TABLE Auctions(
     startingPrice double, 
     reservePrice double,
     endDate timestamp,
+    auctionImage varchar(100),
     FOREIGN KEY (username) REFERENCES Users(username),
     FOREIGN KEY (category) REFERENCES Categories(category)
 );
