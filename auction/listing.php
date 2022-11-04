@@ -10,7 +10,7 @@ if(empty($item_id)){
 // TODO: Use item_id to make a query to the database.
 
 //Getting the specific auction
-$sql_fetch_auction = mysqli_fetch_row(mysqli_query($conn, "select title, details, endDate, reservePrice, auctionImage from Auctions where auctionId = '$item_id'"));
+$sql_fetch_auction = mysqli_fetch_row(mysqli_query($conn, "select title, details, endDate, reservePrice, auctionImage, startingPrice from Auctions where auctionId = '$item_id'"));
 //Getting the number of bids
 $sql_fetch_bids = mysqli_fetch_row(mysqli_query($conn, "select count(*) from Bids where auctionId = '$item_id'"));
 //Getting the current price
@@ -19,6 +19,9 @@ if ($sql_fetch_auction && $sql_fetch_bids && $sql_fetch_price) {
   $title = $sql_fetch_auction[0];
   $description = $sql_fetch_auction[1];
   $current_price = $sql_fetch_price[0];
+  if($current_price == 0){
+    $current_price = $sql_fetch_auction[5];
+  }
   $num_bids = $sql_fetch_bids[0];
   $end_time = new DateTime($sql_fetch_auction[2]);
   $image = $sql_fetch_auction[4];
