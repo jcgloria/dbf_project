@@ -16,7 +16,6 @@ if ($conn->connect_error) {
 } else {
   echo '<script>console.log("connected")</script>';
 }
-
 session_start();
 ?>
 
