@@ -7,7 +7,7 @@ from datetime import datetime
 #Connection to Mysql. Make sure port is correct. 
 cnx = mysql.connector.connect(user='root', password='root',
                               host='localhost',
-                              port=3306,
+                              port=8889,
                               database='dbf_project')
 
 cursor = cnx.cursor()                    

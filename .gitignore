@@ -1,3 +1,4 @@
 .DS_Store
 auction/.vscode/settings.json
 auction/upload.php
+auction/images/*
