@@ -112,7 +112,7 @@ if(isset($_POST['createAuction'])) {
     // Check if $uploadOk is set to 0 by an error
     if ($uploadOk == 0) {
         echo "Sorry, your file was not uploaded.";
-    // if everything is ok, try to upload file
+        die();
     } 
     if ($uploadOk == 1) {
         $newfilename = $target_dir . round(microtime(true)) . '.' . $imageFileType;
@@ -120,6 +120,7 @@ if(isset($_POST['createAuction'])) {
         echo "The file ". htmlspecialchars( basename( $_FILES["image"]["name"])). " has been uploaded.";
         } else {
         echo "Sorry, there was an error uploading your file.";
+        die();
         }
     }
 
