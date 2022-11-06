@@ -16,6 +16,11 @@
 <h2 class="my-3">Recommendations for you</h2>
 
 <?php
+if (!isset($_GET['page'])) { $curr_page = 1; }
+else { $curr_page = $_GET['page']; }
+
+$results_per_page = 5; // Number of results to display per page
+
   // This page is for showing a buyer recommended items based on their bid 
   // history.
 
@@ -29,9 +34,9 @@
   // Sum the rankings for each auctionId and order by the sum
   // Add auction details to each row if the endDate is after the current date
   $sql_recommendations = "SELECT recoms.auctionId, recoms.title, recoms.details, recoms.endDate, recoms.category, recoms.rank, COUNT(b.bidID) as numBids,
-        case when count(b.bidId) > 0 then MAX(b.bidPrice)
-        else recoms.startingPrice
-        end as currentPrice
+        CASE WHEN COUNT(b.bidId) > 0 THEN MAX(b.bidPrice)
+        ELSE recoms.startingPrice
+        END AS currentPrice
       FROM (
         SELECT a.auctionId, a.title, a.details, a.endDate, a.category, a.startingPrice, SUM(rank) AS rank 
         FROM (".$sql_rank_similar_users.") AS similar_users, Auctions a
@@ -46,14 +51,13 @@
         )
         GROUP BY a.auctionId
       ) as recoms
-      join Bids as b on recoms.auctionId = b.auctionId
+      JOIN Bids as b on recoms.auctionId = b.auctionId
       WHERE recoms.endDate >= NOW()
-      group by recoms.auctionId
+      GROUP BY recoms.auctionId
       ORDER BY rank DESC";
 
   $result = mysqli_query($conn, $sql_recommendations);
   $rowcount = mysqli_num_rows($result);
-  $results_per_page = 10; // Number of results to display per page
   $max_page = ceil($rowcount / $results_per_page);
 ?>
 
@@ -67,27 +71,19 @@
 
   <ul class="list-group">
     <?php
-    while ($row = mysqli_fetch_array($result)) {
+    $rowsShown = ($curr_page - 1) * $results_per_page;
+    for($i = $rowsShown; $i < $rowsShown + $results_per_page && !($i >= $rowcount); $i++) {
+      mysqli_data_seek($result, $i);
+      $row = mysqli_fetch_assoc($result);
       print_listing_li($row['auctionId'], $row['title'], $row['details'], $row['currentPrice'], $row['numBids'], new DateTime($row['endDate']));
     }
     ?>
   </ul>
 
-
   <!-- Pagination for results listings -->
   <nav aria-label="Search results pages" class="mt-5">
     <ul class="pagination justify-content-center">
-
       <?php
-
-      // Copy any currently-set GET variables to the URL.
-      $querystring = "";
-      foreach ($_GET as $key => $value) {
-        if ($key != "page") {
-          $querystring .= "$key=$value&amp;";
-        }
-      }
-
       $high_page_boost = max(3 - $curr_page, 0);
       $low_page_boost = max(2 - ($max_page - $curr_page), 0);
       $low_page = max(1, $curr_page - 2 - $low_page_boost);
@@ -96,7 +92,7 @@
       if ($curr_page != 1) {
         echo ('
     <li class="page-item">
-      <a class="page-link" href="browse.php?' . $querystring . 'page=' . ($curr_page - 1) . '" aria-label="Previous">
+      <a class="page-link" href="recommendations.php?page=' . ($curr_page - 1) . '" aria-label="Previous">
         <span aria-hidden="true"><i class="fa fa-arrow-left"></i></span>
         <span class="sr-only">Previous</span>
       </a>
@@ -116,23 +112,20 @@
 
         // Do this in any case
         echo ('
-      <a class="page-link" href="browse.php?' . $querystring . 'page=' . $i . '">' . $i . '</a>
+      <a class="page-link" href="recommendations.php?page=' . $i . '">' . $i . '</a>
     </li>');
       }
 
       if ($curr_page != $max_page) {
         echo ('
     <li class="page-item">
-      <a class="page-link" href="browse.php?' . $querystring . 'page=' . ($curr_page + 1) . '" aria-label="Next">
+      <a class="page-link" href="recommendations.php?page=' . ($curr_page + 1) . '" aria-label="Next">
         <span aria-hidden="true"><i class="fa fa-arrow-right"></i></span>
         <span class="sr-only">Next</span>
       </a>
     </li>');
       }
       ?>
-
     </ul>
   </nav>
-
-
 </div>
