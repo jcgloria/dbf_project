@@ -1,10 +1,14 @@
-<?php include_once("header.php")?>
-<?php include 'create_auction.php' ?>
+<?php include "header.php"?>
+
+<?php 
+ob_start();
+include 'mylistings.php';
+ob_end_clean();?>
 
 <div class="container my-5">
 
 <?php
-ob_start();
+
 // This function takes the form data and adds the new auction to the database.
 
 /* TODO #1: Connect to MySQL database (perhaps by requiring a file that
@@ -57,7 +61,7 @@ if(isset($_POST['createAuction'])) {
     } else {
         if($_POST['reservePrice'] < $startingPrice) {
             echo '<div class="alert alert-danger"role="alert">Reserve price should be larger than starting price</div>';
-            die();   
+            die();
         } else {
             $reservePrice = $_POST['reservePrice'];
         }
@@ -136,19 +140,20 @@ if(isset($_POST['createAuction'])) {
 
     if(mysqli_query($conn,$sql)) {
         // If all is successful, let user know.
-        //echo '<div class="alert alert-success text-center"role="alert">Auction sucessfully created <a href="mylisting.php" class="alert-link">View your new listing.</a></div>';
-        //"Location: index.php";
         $fetch = " SELECT max(auctionID) FROM Auctions GROUP BY  '$username' " ;
         $item = mysqli_fetch_row(mysqli_query($conn,$fetch));
         $item_id = $item[0];
-        echo "<div class='alert alert-success text-center'role='alert'>Auction sucessfully created <a href='listing.php?item_id=$item_id' class='alert-link'>View my new listing.</a> </div>";
-        header('Location:mylistings.php');
+        //echo "<div class='alert alert-success text-center'role='alert'>Auction sucessfully created <a href='listing.php?item_id=$item_id' class='alert-link'>View my new listing.</a> </div>";
+        $_SESSION['msg'] = '<div class="alert alert-success" role="alert">
+        Auction create sucessful!
+        </div>';
+        header("Location:mylistings.php");
     }  else {
         echo 'Error: ' .mysqli_error($conn);
-        //echo"<a href='create_auction.php'>Unsucessfull</a>";
-        $_SESSION['msg'] = '<div class="alert alert-danger" role="alert">
-            Auction create unsucessful.
-        </div>';
+        echo"<a href='create_auction.php'>Unsucessfull</a>";
+        //$_SESSION['msg'] = '<div class="alert alert-danger" role="alert">
+        //    Auction create unsucessful.
+        //</div>';
     }   
 
 }
