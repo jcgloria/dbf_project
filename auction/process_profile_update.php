@@ -3,8 +3,8 @@ include_once("header.php");
 ob_start();
 include_once("profile.php");
 ob_end_clean();
-// TODO: Extract $_POST variables, check they're OK, and attempt to create
-// an account. Notify user of success/failure and redirect/give navigation 
+// Extract $_POST variables, check they're OK, and attempt to update the
+// user's account. Notify user of success/failure and redirect/give navigation 
 // options.
 
 if (isset($_POST['update'])) {
@@ -35,7 +35,7 @@ if (isset($_POST['update'])) {
     //     echo '<div class="alert alert-danger"role="alert">Password must be the same;</div>';
     //     die();
     // }
-    
+
     if (mysqli_query($conn, $sql)) {
         $msg = '<div class="alert alert-success" role="alert">
             Your profile has been updated successfully.
