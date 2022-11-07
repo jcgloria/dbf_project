@@ -91,6 +91,7 @@ session_start();
       ?>
     </ul>
     <ul class="navbar-nav ml-auto">
+      <a class="nav-link" href="profile.php">Profile</a>
       <a class="nav-link" href="notifications.php">Notifications</a>
       <a class="nav-link" href="reporting.php">Reporting</a>
     </ul>
