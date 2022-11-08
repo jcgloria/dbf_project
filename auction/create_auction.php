@@ -31,14 +31,14 @@ $result = mysqli_query($conn,$sql);
         <div class="form-group row">
           <label for="auctionTitle" class="col-sm-2 col-form-label text-right">Title of auction</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="title" id="auctionTitle" placeholder="e.g. Black mountain bike">
+            <input type="text" value="<?php if(isset($_SESSION['title'])){ echo $_SESSION['title'];}?>" class="form-control" name="title" id="auctionTitle" placeholder="e.g. Black mountain bike">
             <small id="titleHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> A short description of the item you're selling, which will display in listings.</small>
           </div>
         </div>
         <div class="form-group row">
           <label for="auctionDetails" class="col-sm-2 col-form-label text-right">Details</label>
           <div class="col-sm-10">
-            <textarea class="form-control" name="details" id="auctionDetails" rows="4"></textarea>
+            <textarea class="form-control" name="details" id="auctionDetails" rows="4"><?php if(isset($_SESSION['details'])){ echo $_SESSION['details'];}?></textarea>
             <small id="detailsHelp" class="form-text text-muted">Full details of the listing to help bidders decide if it's what they're looking for.</small>
           </div>
         </div>
@@ -70,7 +70,7 @@ $result = mysqli_query($conn,$sql);
               <div class="input-group-prepend">
                 <span class="input-group-text">£</span>
               </div>
-              <input type="number" name="startingPrice" class="form-control" id="auctionStartPrice">
+              <input type="number" value="<?php if(isset($_SESSION['startingPrice'])){ echo $_SESSION['startingPrice'];}?>" name="startingPrice" class="form-control" id="auctionStartPrice">
             </div>
             <small id="startBidHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Initial bid amount.</small>
           </div>
@@ -82,7 +82,7 @@ $result = mysqli_query($conn,$sql);
               <div class="input-group-prepend">
                 <span class="input-group-text">£</span>
               </div>
-              <input type="number" name="reservePrice" class="form-control" id="auctionReservePrice">
+              <input type="number" value="<?php if(isset($_SESSION['reservePrice'])){ echo $_SESSION['reservePrice'];}?>" name="reservePrice" class="form-control" id="auctionReservePrice">
             </div>
             <small id="reservePriceHelp" class="form-text text-muted">Optional. Auctions that end below this price will not go through. This value is not displayed in the auction listing.</small>
           </div>
@@ -90,7 +90,7 @@ $result = mysqli_query($conn,$sql);
         <div class="form-group row">
           <label for="auctionEndDate" class="col-sm-2 col-form-label text-right">End date</label>
           <div class="col-sm-10">
-            <input type="datetime-local" name="endDate" class="form-control" id="auctionEndDate">
+            <input type="datetime-local" value="<?php if(isset($_SESSION['endDate'])){ echo $_SESSION['endDate'];}?>" name="endDate" class="form-control" id="auctionEndDate">
             <small id="endDateHelp" class="form-text text-muted"><span class="text-danger">* Required.</span> Day for the auction to end.</small>
           </div>
         </div>
