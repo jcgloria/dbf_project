@@ -69,14 +69,14 @@ $notifications = $conn->query("SELECT n.notificationType, a.title, b.bidPrice, n
             case 'Auction Ended-Seller':
                 echo 'Your auction has ended!</h5>';
                 if ($row['bidId'] != null) {
-                    echo '<p class="card-text">Your auction <strong>' . $row['title'] . '</strong> has ended and it was sold for <strong>' . $row['bidPrice'] . '</strong>.</p>';
+                    echo '<p class="card-text">Your auction <strong>' . $row['title'] . '</strong> has ended and it was sold for <strong>£' . $row['bidPrice'] . '</strong>.</p>';
                 } else {
                     echo '<p class="card-text">Your auction <strong>' . $row['title'] . '</strong> has ended and it was not sold.</p>';
                 }
                 break;
             case 'Auction Ended-Buyer':
                 echo 'You have won an auction!</h5>
-                <p class="card-text">You have won the auction <strong>' . $row['title'] . '</strong> for <strong>' . $row['bidPrice'] . '</strong>.</p>';
+                <p class="card-text">You have won the auction <strong>' . $row['title'] . '</strong> for <strong>£' . $row['bidPrice'] . '</strong>.</p>';
                 break;
             case 'Auction Ended-Watcher':
                 echo 'An auction you were watching has ended!</h5>
@@ -84,11 +84,11 @@ $notifications = $conn->query("SELECT n.notificationType, a.title, b.bidPrice, n
                 break;
             case 'Outbid':
                 echo 'You have been outbidded!</h5>
-                <p class="card-text">You have been outbidded on the auction <strong>' . $row['title'] . '</strong> for <strong>' . $row['bidPrice'] . '</strong>.</p>';
+                <p class="card-text">You have been outbidded on the auction <strong>' . $row['title'] . '</strong> for <strong>£' . $row['bidPrice'] . '</strong>.</p>';
                 break;
             case 'Watchlist':
                 echo 'An auction you are watching has a new bid!</h5>
-                <p class="card-text">The auction <strong>' . $row['title'] . '</strong> has a new bid for <strong>' . $row['bidPrice'] . '</strong>.</p>';
+                <p class="card-text">The auction <strong>' . $row['title'] . '</strong> has a new bid for <strong>£' . $row['bidPrice'] . '</strong>.</p>';
                 break;
         }
         echo '</div></div><br>';
