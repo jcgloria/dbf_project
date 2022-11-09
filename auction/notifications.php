@@ -48,7 +48,7 @@ GROUP BY a.auctionId,a.username,a.reservePrice, a.startingPrice";
 ?>
 <?php
 //Lets get the notifications for the current user. Also get relevant info about the auction and bid (if any).
-$notifications = $conn->query("SELECT n.notificationType, a.title, b.bidPrice 
+$notifications = $conn->query("SELECT n.notificationType, a.title, b.bidPrice, n.dateTime
     FROM Notifications as n join Auctions as a on n.auctionId = a.auctionId join Bids as b on b.bidId = n.bidId 
     WHERE n.username = '" . $_SESSION['username'] . "' ORDER BY dateTime DESC");
     
