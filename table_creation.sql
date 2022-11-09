@@ -62,3 +62,15 @@ CREATE TABLE Watchlist(
     FOREIGN KEY (auctionId) REFERENCES Auctions(auctionId),
     FOREIGN KEY (username) REFERENCES Users(username)
 );
+
+CREATE TABLE Notifications(
+    notificationId int unsigned PRIMARY KEY AUTO_INCREMENT,
+    username varchar(255),
+    auctionId int unsigned,
+    bidId int unsigned,
+    notificationType varchar(255),
+    dateTime timestamp,
+    FOREIGN KEY (username) REFERENCES Users(username),
+    FOREIGN KEY (auctionId) REFERENCES Auctions(auctionId),
+    FOREIGN KEY (bidId) REFERENCES Bids(bidId)
+);
