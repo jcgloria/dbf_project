@@ -1,6 +1,22 @@
 <?php include_once("header.php") ?>
 
 <?php
+
+//Check session to see if user is logged in
+#Get the session of the user
+session_start();
+if (isset($_SESSION) && $_SESSION['logged_in']) {
+    $username = $_SESSION['username'];
+} else {
+    echo '<p>You must login to view notifications</p>';
+}
+//Check to see if updateAuctionEndNotification is being called through POST
+if (isset($_POST['updateAuctionEndNotification'])) {
+    updateAuctionEndNotification($conn);
+    echo '<p>Notifications updated</p>';
+    die();
+}
+
 //This function checks which auctions have ended and it's in charge of letting the seller, buyer, and watchers know about it.
 function updateAuctionEndNotification($conn)
 {
@@ -47,11 +63,12 @@ GROUP BY a.auctionId,a.username,a.reservePrice, a.startingPrice";
 //updateAuctionEndNotification($conn);
 ?>
 <?php
+
 //Lets get the notifications for the current user. Also get relevant info about the auction and bid (if any).
-$notifications = $conn->query("SELECT n.notificationType, a.title, b.bidPrice, n.dateTime
+$notifications = $conn->query("SELECT n.notificationType, a.title, b.bidPrice, n.dateTime, n.bidId
     FROM Notifications as n join Auctions as a on n.auctionId = a.auctionId join Bids as b on b.bidId = n.bidId 
-    WHERE n.username = '" . $_SESSION['username'] . "' ORDER BY dateTime DESC");
-    
+    WHERE n.username = '" . $username . "' ORDER BY dateTime DESC");
+
 ?>
 <style>
 </style>
