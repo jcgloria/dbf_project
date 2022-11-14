@@ -141,15 +141,15 @@ $query = "SELECT * FROM (SELECT a.auctionId, a.title, a.details, a.endDate, a.ca
      end as currentPrice, 
      count(b.bidId) as numBids
      FROM auctions as a  left join bids as b on a.auctionId = b.auctionId
-     where $where_clause
-     group by a.auctionId, a.title, a.details, a.endDate, a.category, a.startingPrice
-     $order_clause
-     limit $curr_page_start_item, $results_per_page) as items
-     where $outside_where_clause";
+     WHERE $where_clause
+     GROUP BY a.auctionId, a.title, a.details, a.endDate, a.category, a.startingPrice
+     $order_clause) as items
+     WHERE $outside_where_clause
+     LIMIT $curr_page_start_item, $results_per_page";
 $result = mysqli_query($conn, $query);
 $rowcount = mysqli_fetch_row(mysqli_query($conn, "select count(*) from Auctions as a where $where_clause"))[0]; // Total number of results
 $max_page = ceil($rowcount / $results_per_page);
-?>
+?>t
 
 <div class="container mt-5">
 
