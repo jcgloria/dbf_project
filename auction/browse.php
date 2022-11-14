@@ -149,7 +149,6 @@ $query = "SELECT * FROM (SELECT a.auctionId, a.title, a.details, a.endDate, a.ca
 $result = mysqli_query($conn, $query);
 $rowcount = mysqli_fetch_row(mysqli_query($conn, "select count(*) from Auctions as a where $where_clause"))[0]; // Total number of results
 $max_page = ceil($rowcount / $results_per_page);
-echo $query;
 ?>
 
 <div class="container mt-5">
