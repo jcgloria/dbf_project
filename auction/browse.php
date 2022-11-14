@@ -53,6 +53,25 @@
           <button type="submit" class="btn btn-primary">Search</button>
         </div>
       </div>
+      <div class="form-inline">
+        <p>Filter Price Range:</p>
+        <div class="col-md-3">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">£</span>
+            </div>
+            <input name="priceLow" type="text" class="form-control" placeholder="Low">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">£</span>
+            </div>
+            <input name="priceHigh" type="text" class="form-control" placeholder="High">
+          </div>
+        </div>
+      </div>
     </form>
   </div> <!-- end search specs bar -->
 
@@ -62,6 +81,7 @@
 <?php
 $where_clause = "a.endDate >= NOW()";
 $order_clause = "";
+$outside_where_clause = "1=1";
 // Retrieve these from the URL
 if (isset($_GET['keyword'])) {
   $keyword = $_GET['keyword'];
@@ -79,6 +99,16 @@ if (isset($_GET['has_img'])) {
   $category = $_GET['has_img'];
   $where_clause .= " AND a.image is not null";
 }
+
+if (isset($_GET['priceLow'])) {
+  $priceLow = $_GET['priceLow'];
+  $outside_where_clause .= " AND items.currentPrice >= '$priceLow'";
+}
+if (isset($_GET['priceHigh'])) {
+  $priceHigh = $_GET['priceHigh'];
+  $outside_where_clause .= " AND items.currentPrice <= '$priceHigh'";
+}
+
 if (isset($_GET['order_by'])) {
   $ordering = $_GET['order_by'];
   switch ($ordering) {
@@ -105,7 +135,7 @@ $results_per_page = 10; // Number of results to display per page
 $curr_page_start_item = $results_per_page * ($curr_page - 1); // Index of first item on current page
 
 
-$query = "SELECT a.auctionId, a.title, a.details, a.endDate, a.category,
+$query = "SELECT * FROM (SELECT a.auctionId, a.title, a.details, a.endDate, a.category,
      case when count(b.bidId) > 0 then MAX(b.bidPrice)
      else a.startingPrice
      end as currentPrice, 
@@ -114,7 +144,8 @@ $query = "SELECT a.auctionId, a.title, a.details, a.endDate, a.category,
      where $where_clause
      group by a.auctionId, a.title, a.details, a.endDate, a.category, a.startingPrice
      $order_clause
-     limit $curr_page_start_item, $results_per_page";
+     limit $curr_page_start_item, $results_per_page) as items
+     where $outside_where_clause";
 $result = mysqli_query($conn, $query);
 $rowcount = mysqli_fetch_row(mysqli_query($conn, "select count(*) from Auctions as a where $where_clause"))[0]; // Total number of results
 $max_page = ceil($rowcount / $results_per_page);
@@ -186,7 +217,7 @@ $max_page = ceil($rowcount / $results_per_page);
       </a>
     </li>');
         }
-      }else{
+      } else {
         echo '<p class="text-center">No results found.</p>';
       }
       ?>

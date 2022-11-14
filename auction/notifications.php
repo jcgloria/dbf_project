@@ -30,8 +30,7 @@ FROM
 WHERE a.endDate <= NOW() AND a.auctionId NOT IN (
         SELECT auctionId
         FROM Notifications
-        WHERE notificationType = 'Auction Ended-Seller' #If this notification exists then this auction has already been notified as ended. 
-    	AND auctionId = a.auctionId) 
+        WHERE notificationType = 'Auction Ended-Seller') #If this notification exists then this auction has already been notified as ended.  
 GROUP BY a.auctionId,a.username,a.reservePrice, a.startingPrice";
 
     $result = $conn->query($sql);
@@ -68,7 +67,6 @@ GROUP BY a.auctionId,a.username,a.reservePrice, a.startingPrice";
 $notifications = $conn->query("SELECT n.notificationType, a.title, b.bidPrice, n.dateTime, n.bidId
     FROM Notifications as n join Auctions as a on n.auctionId = a.auctionId join Bids as b on b.bidId = n.bidId 
     WHERE n.username = '" . $username . "' ORDER BY dateTime DESC");
-
 ?>
 <style>
 </style>
