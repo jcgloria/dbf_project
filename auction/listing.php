@@ -25,6 +25,9 @@ if ($sql_fetch_auction && $sql_fetch_bids && $sql_fetch_price) {
   $num_bids = $sql_fetch_bids[0];
   $end_time = new DateTime($sql_fetch_auction[2]);
   $image = $sql_fetch_auction[4];
+  if ($image == null) {
+    $image = "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg";
+  }
   $reserve_price = $sql_fetch_auction[3];
   //Check to see if the current bid is higher than the reserve price
   $current_price >= $reserve_price ? $minBid = true : $minBid = false;
@@ -98,7 +101,7 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
       </div>
       <br>
       <div class = "itemImage">
-        <img src="<?php echo ($image); ?>" alt="Auction Image" class="img-thumbnail"  width="500" height="500">	
+        <img src="<?php echo ($image) ?>" alt="Auction Image" class="img-thumbnail"  width="500" height="500">	
     </div>
     <div class = "col-sm-4"></br>
       <!-- show reserve price if it is set -->
