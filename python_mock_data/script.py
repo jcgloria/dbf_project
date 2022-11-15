@@ -1,13 +1,13 @@
 import mysql.connector
 from random import choice, randint, random
-from datetime import datetime
+from datetime import datetime, timedelta 
 
 #If venv doesnt work, just run pip3 install mysql-connector-python. All other libraries are standard. 
 
 #Connection to Mysql. Make sure port is correct. 
 cnx = mysql.connector.connect(user='root', password='root',
                               host='localhost',
-                              port=3306,
+                              port=8889,
                               database='dbf_project')
 
 cursor = cnx.cursor()                    
@@ -46,7 +46,8 @@ for line in file:
                "VALUES (%s, %s, %s, %s, %s, %s, %s)")
     user = choice(sellers)
     category = choice(categories)
-    data_auctions = (user, values[0], values[1], category, values[2], 0 if not values[3] else values[3], datetime.strptime(values[4].replace('\n', ''),"%Y-%m-%dT%H:%M:%SZ"))
+    addyear = timedelta(days=365)
+    data_auctions = (user, values[0], values[1], category, values[2], 0 if not values[3] else values[3], datetime.strptime(values[4].replace('\n', ''),"%Y-%m-%dT%H:%M:%SZ")+addyear)
     cursor.execute(add_auctions, data_auctions)
     auctions.append({'auctionId': cursor.lastrowid,'username': user, 'startingPrice':float(values[2])})
 
