@@ -9,35 +9,32 @@ if(empty($item_id)){
 
 // TODO: Use item_id to make a query to the database.
 
-//Getting the specific auction
-$sql_fetch_auction = mysqli_fetch_row(mysqli_query($conn, "select title, details, endDate, reservePrice, auctionImage, startingPrice from Auctions where auctionId = '$item_id'"));
-//Getting the number of bids
-$sql_fetch_bids = mysqli_fetch_row(mysqli_query($conn, "select count(*) from Bids where auctionId = '$item_id'"));
-//Getting the current price
-$sql_fetch_price = mysqli_fetch_row(mysqli_query($conn, "select max(bidPrice) from Bids where auctionId = '$item_id'"));
-if ($sql_fetch_auction && $sql_fetch_bids && $sql_fetch_price) {
-  $title = $sql_fetch_auction[0];
-  $description = $sql_fetch_auction[1];
-  $current_price = $sql_fetch_price[0];
-  if($current_price == 0){
-    $current_price = $sql_fetch_auction[5];
-  }
-  $num_bids = $sql_fetch_bids[0];
-  $end_time = new DateTime($sql_fetch_auction[2]);
-  $image = $sql_fetch_auction[4];
+$sql = "select a.title, a.details, a.endDate, a.reservePrice, a.auctionImage, a.startingPrice, COUNT(b.bidId) as numBids, MAX(b.bidPrice) as bidPrice
+from Auctions as a left join Bids as b on a.auctionId = b.auctionId
+where a.auctionId = '$item_id'
+group by a.title, a.details, a.endDate, a.reservePrice, a.auctionImage, a.startingPrice";
+$result = mysqli_query($conn, $sql);
+$row = mysqli_fetch_assoc($result);
+
+if ($row) {
+  $title = $row['title'];
+  $description = $row['details'];
+  $current_price = $row['numBids'] > 0 ? $row['bidPrice'] : $row['startingPrice'];
+  $num_bids = $row['numBids'];
+  $end_time = new DateTime($row['endDate']);
+  $image = $row['auctionImage'];
   if ($image == null) {
     $image = "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg";
   }
-  $reserve_price = $sql_fetch_auction[3];
-  //Check to see if the current bid is higher than the reserve price
-  $current_price >= $reserve_price ? $minBid = true : $minBid = false;
+  $reserve_price = $row['reservePrice'];
+  //Check if there's at least one bid and the reserve price has been met. 
+  $current_price >= $reserve_price && $num_bids != 0  ? $minBid = true : $minBid = false;
 } else {
   $_SESSION['msg'] = '<div class="alert alert-danger" role="alert">
         There was an error picking up the data from the server
       </div>';
   header("Location: browse.php");
 }
-
 
 // TODO: Note: Auctions that have ended may pull a different set of data,
 //       like whether the auction ended in a sale or was cancelled due
