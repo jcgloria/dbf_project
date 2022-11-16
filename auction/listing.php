@@ -9,7 +9,7 @@ if(empty($item_id)){
 
 // TODO: Use item_id to make a query to the database.
 
-$sql = "select a.title, a.details, a.endDate, a.reservePrice, a.auctionImage, a.startingPrice, COUNT(b.bidId) as numBids, MAX(b.bidPrice) as bidPrice
+$sql = "select a.title, a.details, a.endDate, a.reservePrice, a.auctionImage, a.startingPrice, COUNT(b.bidId) as numBids, MAX(b.bidPrice) as bidPrice, a.username
 from Auctions as a left join Bids as b on a.auctionId = b.auctionId
 where a.auctionId = '$item_id'
 group by a.title, a.details, a.endDate, a.reservePrice, a.auctionImage, a.startingPrice";
@@ -23,6 +23,7 @@ if ($row) {
   $num_bids = $row['numBids'];
   $end_time = new DateTime($row['endDate']);
   $image = $row['auctionImage'];
+  $seller = $row['username'];
   if ($image == null) {
     $image = "https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg";
   }
@@ -53,6 +54,7 @@ if ($now < $end_time) {
 //       For now, this is hardcoded.
 $has_session = false;
 $watching = false;
+$user = "guest";
 if (isset($_SESSION) && $_SESSION['logged_in']) {
   $has_session = true;
   $user = $_SESSION['username'];
@@ -134,7 +136,7 @@ if (isset($_SESSION) && $_SESSION['logged_in']) {
           <input type="number" class="form-control" name="bid" id="bid">
           <input type="hidden" name="auctionID" value="<?php echo $item_id; ?>">
         </div>
-        <button type="submit" class="btn btn-primary form-control">Place bid</button>
+        <button type="submit" class="btn btn-primary form-control" <?php if ($user == $seller) echo ("disabled")?>>Place bid</button>
       </form>
     <?php endif ?>
 
