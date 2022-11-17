@@ -37,6 +37,7 @@ if (isset($_POST['update'])) {
     // }
 
     if (mysqli_query($conn, $sql)) {
+        $_SESSION['seller'] = true;
         $msg = '<div class="alert alert-success" role="alert">
             Your profile has been updated successfully.
             </div>';
